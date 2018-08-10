@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Drawing;
 using System.Windows.Forms;
 using TrayWeekNumber.Graphics;
@@ -20,7 +21,8 @@ namespace TrayWeekNumber
             InitializeComponent();
             InitializeTrayContextMenu();
 
-            _updateTimer = new Timer(5000);
+            int refreshInterval = int.Parse(ConfigurationManager.AppSettings["RefreshInterval"]);
+            _updateTimer = new Timer(refreshInterval);
             _updateTimer.Elapsed += (sender, args) => UpdateWeekNumber();
 
             // Create and set an invisible parent window
@@ -52,12 +54,9 @@ namespace TrayWeekNumber
             _updateTimer.Start();
         }
 
-        private void UpdateWeekNumber(bool allowDispose = true, bool forceUpdate = false)
+        private void UpdateWeekNumber(bool allowDispose = true)
         {
             int weekNumber = DateTimeOffsetHelper.GetIso8601WeekNumber(DateTimeOffset.Now);
-
-            if (weekNumber == _currentWeekNumber && !forceUpdate)
-                return;
 
             WeekNumberRenderer renderer = new WeekNumberRenderer(_settings);
             Icon icon = renderer.RenderIcon(weekNumber);
@@ -74,7 +73,7 @@ namespace TrayWeekNumber
             menuItem.Checked = !menuItem.Checked;
             _settings.ShowBackColor = menuItem.Checked;
             _settings.Save();
-            UpdateWeekNumber(forceUpdate: true);
+            UpdateWeekNumber();
         }
 
         private void PickBackColor()
@@ -85,7 +84,7 @@ namespace TrayWeekNumber
                 case DialogResult.Yes:
                     _settings.BackColor = backColorDialog.Color;
                     _settings.Save();
-                    UpdateWeekNumber(forceUpdate: true);
+                    UpdateWeekNumber();
                     break;
             }
         }
@@ -98,7 +97,7 @@ namespace TrayWeekNumber
                 case DialogResult.Yes:
                     _settings.ForeColor = foreColorDialog.Color;
                     _settings.Save();
-                    UpdateWeekNumber(forceUpdate: true);
+                    UpdateWeekNumber();
                     break;
             }
         }
