@@ -1,9 +1,9 @@
-﻿*** ABOUT ***
+﻿# ABOUT
 
-This applications places the number of the week in the system tray. It's background and foreground colors can be configured too.
+This applications allows for easily adding a daily work log entry.
 
 
-*** INSTALLATION ***
+# INSTALLATION
 
 Just place the files anywhere you want.
 
