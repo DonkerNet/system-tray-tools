@@ -61,43 +61,12 @@ namespace WorkLog
             }
             else if (!string.IsNullOrEmpty(entryTextBox.Text))
             {
-                // Finish entry
-
-                string entryText = entryTextBox.Text;
-                MoveCursorToEnd();
-
-                DialogResult result = MessageBox.Show(
-                    this,
-                    $"Add the following entry?\r\n\r\n{NormalizeWhiteSpace(entryText)}",
-                    "Confirm entry",
-                    MessageBoxButtons.OKCancel);
-
-                if (result == DialogResult.OK)
-                {
-                    AddEntry();
-                }
-                else
-                {
-                    // For some reason, the key event is still processed when a dialog was shown in the mean time, so we reset the text to prevent enters from being added
-                    SetText(entryText);
-                }
+                AddEntry();
             }
             else
             {
                 Hide();
             }
-        }
-
-        private void MoveCursorToEnd()
-        {
-            entryTextBox.SelectionStart = entryTextBox.Text.Length;
-            entryTextBox.SelectionLength = 0;
-        }
-
-        private void SetText(string text)
-        {
-            entryTextBox.Text = text;
-            MoveCursorToEnd();
         }
 
         private string NormalizeWhiteSpace(string text)
@@ -141,8 +110,11 @@ namespace WorkLog
 
         #region Event handlers
 
-        private void trayNotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void trayNotifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left)
+                return;
+
             Show();
             Focus();
             entryTextBox.Focus();

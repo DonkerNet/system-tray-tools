@@ -55,7 +55,7 @@ namespace WorkLog
             // 
             this.trayNotifyIcon.ContextMenuStrip = this.trayNotifyIconContextMenu;
             this.trayNotifyIcon.Visible = true;
-            this.trayNotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.trayNotifyIcon_MouseDoubleClick);
+            this.trayNotifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trayNotifyIcon_MouseClick);
             // 
             // trayNotifyIconContextMenu
             // 
