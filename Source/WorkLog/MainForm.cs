@@ -118,7 +118,7 @@ namespace WorkLog
             // We manually add the current date to the beginning of a new or empty log file
             using FileStream logStream = logFile.OpenWrite();
             using StreamWriter logWriter = new StreamWriter(logStream, Encoding.UTF8);
-            logWriter.WriteLine(DateTime.Now.ToString("yyyy-MM-dd"));
+            logWriter.Write(DateTime.Now.ToString("yyyy-MM-dd"));
             logWriter.Flush();
         }
 
