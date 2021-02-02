@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using log4net;
@@ -99,9 +100,34 @@ namespace WorkLog
             return result.ToString();
         }
 
+        private void EnsureLogSetup()
+        {
+            FileInfo logFile = new FileInfo(_logAppender.File);
+
+            if (logFile.Exists && logFile.Length > 0)
+                return;
+
+            // We call the protected AdjustFileBeforeAppend method to let log4net create a new log file if necessary
+            _logAppender
+                .GetType()
+                .GetMethod("AdjustFileBeforeAppend", BindingFlags.NonPublic | BindingFlags.Instance)
+                .Invoke(_logAppender, null);
+
+            logFile.Refresh();
+
+            // We manually add the current date to the beginning of a new or empty log file
+            using FileStream logStream = logFile.OpenWrite();
+            using StreamWriter logWriter = new StreamWriter(logStream, Encoding.UTF8);
+            logWriter.WriteLine(DateTime.Now.ToString("yyyy-MM-dd"));
+            logWriter.Flush();
+        }
+
         private void AddEntry()
         {
+            EnsureLogSetup();
+
             string entryText = NormalizeWhiteSpace(entryTextBox.Text);
+            
             _log.Info(entryText);
 
             entryTextBox.Clear();
