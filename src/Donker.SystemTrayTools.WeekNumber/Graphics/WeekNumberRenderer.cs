@@ -20,7 +20,7 @@ public class WeekNumberRenderer(AppSettings appSettings)
 
         using var g = DrawingSurface.FromImage(image);
 
-        g.TextRenderingHint = TextRenderingHint.AntiAlias;
+        g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
         g.Clear(_backColor);
 
