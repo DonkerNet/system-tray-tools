@@ -71,6 +71,8 @@ public partial class MainForm : Form
             weekTrayIcon.Icon?.Dispose();
 
         weekTrayIcon.Icon = icon;
+        weekTrayIcon.Text = string.Format(TextResources.CurrentWeek, weekNumber);
+
         _currentWeekNumber = weekNumber;
     }
 
@@ -115,20 +117,5 @@ public partial class MainForm : Form
         weekTrayIcon.Icon = null;
         Close();
         Application.Exit();
-    }
-
-    private void WeekTrayIcon_MouseClick(object sender, MouseEventArgs e)
-    {
-        if (e.Button != MouseButtons.Left)
-            return;
-
-        DateTimeOffset currentOffSet = DateTimeOffset.Now;
-
-        weekTrayIcon.BalloonTipText = string.Format(
-            "{0}\r\nWeek {1}",
-            currentOffSet.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss zzz"),
-            _currentWeekNumber);
-
-        weekTrayIcon.ShowBalloonTip(10000);
     }
 }

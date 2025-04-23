@@ -37,7 +37,6 @@ partial class MainForm
         // weekTrayIcon
         // 
         weekTrayIcon.Visible = true;
-        weekTrayIcon.MouseClick += WeekTrayIcon_MouseClick;
         // 
         // foreColorDialog
         // 
